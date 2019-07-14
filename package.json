@@ -1,15 +1,23 @@
 {
-  "name": "way_farer",
+  "name": "wayfarer",
   "version": "1.0.0",
-  "description": "a public transportation booking application",
+  "description": "Public bus transport booking service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "way_farer"
+    "test": "mocha",
+    "lint": "eslint ../wayfarer"
   },
   "author": "nsikak usanga",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "mocha": "^6.1.4",
+    "pg": "^7.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.0"
+  }
 }
