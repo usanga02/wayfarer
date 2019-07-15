@@ -1,7 +1,9 @@
+require("express-async-errors");
 const express = require("express");
-const config = require("config");
 const app = express();
+const config = require("config");
 const { Client } = require("pg");
+const error = require("./middleware/error");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 const buses = require("./routes/buses");
@@ -22,14 +24,18 @@ const client = new Client({
 });
 
 app.use(express.json());
-app.use("/api/v1/users", users);
+app.use("/api/v1/users/signup", users);
 app.use("/api/v1/trips", trips);
 app.use("/api/v1/buses", buses);
 app.use("/api/v1/bookings", bookings);
-app.use("/api/v1/auth/", auth);
+app.use("/api/v1/auth/signin", auth);
+app.use(error);
 
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
-client.connect().then(() => console.log("connected to database"));
+client
+  .connect()
+  .then(() => console.log("connected to database"))
+  .catch(e => console.log(e));
