@@ -1,5 +1,8 @@
+// const auth = require("../middleware/auth");
+const config = require("config");
 const jwt = require("jsonwebtoken");
 const express = require("express");
+
 const router = express.Router();
 const { Client } = require("pg");
 const { validate } = require("../models/user");
@@ -44,7 +47,10 @@ router.post("/", async (req, res) => {
       ]
     );
 
-    const token = jwt.sign({ email: req.body.email }, "jwtPrivateKey");
+    const token = jwt.sign(
+      { email: req.body.email },
+      config.get("jwtPrivateKey")
+    );
 
     res
       .header("x-auth-token", token)
