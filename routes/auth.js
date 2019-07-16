@@ -27,33 +27,33 @@ router.post("/", async (req, res) => {
     });
   }
 
-  try {
-    const email = await client.query("select * from users where email = $1", [
-      `${req.body.email}`
-    ]);
-    password = await client.query("select * from users where password = $1", [
-      `${req.body.password}`
-    ]);
+  const user = await client.query("select * from users where email = $1", [
+    `${req.body.email}`
+  ]);
+  password = await client.query("select * from users where password = $1", [
+    `${req.body.password}`
+  ]);
 
-    if (!(email || password).rows[0]) {
-      res.status(400).json({
-        status: "failure",
-        error: "invalid email or password"
-      });
-    }
-
-    const token = jwt.sign(
-      { email: req.body.email },
-      config.get("jwtPrivateKey")
-    );
-
-    res.status(200).json({
-      status: "success",
-      data: token
+  if (!(user || password).rows[0]) {
+    res.status(400).json({
+      status: "failure",
+      error: "invalid email or password"
     });
-  } catch (e) {
-    console.log(e);
   }
+
+  const token = jwt.sign(
+    { email: req.body.email },
+    config.get("jwtPrivateKey")
+  );
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      user_id: user.rows[0].id,
+      is_admin: user.rows[0].is_admin,
+      token
+    }
+  });
 });
 
 function validate(user) {
