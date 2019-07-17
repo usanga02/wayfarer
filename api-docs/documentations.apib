@@ -1,0 +1,36 @@
+FORMAT: 1A
+HOST: https://www.wayfarer.com
+
+# wayfarer Users
+
+This is users api for retrieving users
+
+# Group Users
+
+## Users Collection [/users]
+
+### Get all users [GET /users]
++ Response 200 (application/json)
+    + Attributes
+        - users (array[user])
+
+### Get individual users [GET /users/{id}]
++ Parameter
+    + id: `1` - The ID of the user
+
++ Response 200 (application/json)
+    + Attributes
+        - Include user
+        - comments (array[comment])
+
+# Data Structures
+
+##user (object)
+- id: `1` (number) - The ID of the users
+- tittle: `My awesome users` (string) - The tittle of the users
+- content: `Some special content` (string) - The details of the users
+
+##comment (object)
+- id: `1` (number) - The ID of the comments
+- content: `Some special content` (string) - The content of the comment
+- author: `Usana Nsikak` (string) - The name of the comment author

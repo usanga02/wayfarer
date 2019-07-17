@@ -1,0 +1,8 @@
+{
+  "name": "wayfarer: Node.js",
+  "description": "Public bus transport booking service",
+  "repository": "https://github.com/usanga02/wayfarer.git",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}
