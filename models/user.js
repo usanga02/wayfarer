@@ -13,7 +13,7 @@ function validateUser(user) {
     email: Joi.string()
       .email()
       .required(),
-    is_admin: Joi.boolean().default('false'),
+    is_admin: Joi.boolean().required(),
     password: Joi.string().required(),
   };
 

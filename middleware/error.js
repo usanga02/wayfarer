@@ -1,4 +1,5 @@
-module.exports = function(err, req, res, next) {
-  res.status(500).send("Something went wrong");
+module.exports = function (err, req, res, next) {
+  res.status(500).send('Something went wrong');
   console.log(err);
+  next();
 };

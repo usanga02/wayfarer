@@ -2,6 +2,7 @@ const Joi = require('joi');
 
 function validateUser(user) {
   const userSchema = {
+    trip_id: Joi.number().required(),
     bus_id: Joi.number().required(),
     origin: Joi.string()
       .required()
@@ -10,7 +11,7 @@ function validateUser(user) {
     destination: Joi.string().required(),
     trip_date: Joi.date(),
     fare: Joi.number(),
-    status: Joi.number(),
+    status: Joi.string().valid(['active', 'cancel']),
   };
 
   return Joi.validate(user, userSchema);

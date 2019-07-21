@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint ../wayfarer"
+    "lint": "eslint ../wayfarer",
+    "start": "nodemon index.js"
   },
   "author": "nsikak usanga",
   "license": "ISC",

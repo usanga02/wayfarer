@@ -2,6 +2,7 @@ const Joi = require('joi');
 
 function validateUser(user) {
   const userSchema = {
+    bus_id: Joi.number(),
     number_plate: Joi.string()
       .required()
       .min(7)

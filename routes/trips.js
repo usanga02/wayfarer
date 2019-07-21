@@ -1,64 +1,58 @@
-const express = require("express");
-const auth = require("../middleware/auth");
-const admin = require("../middleware/admin");
+const express = require('express');
+const { Client } = require('pg');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
+
 const router = express.Router();
-const { Client } = require("pg");
-const { validate } = require("../models/trip");
+const { validate } = require('../models/trip');
 
 const client = new Client({
-  user: "postgres",
-  password: "postgres",
-  host: "usanga-pc",
+  user: 'postgres',
+  password: 'postgres',
+  host: 'usanga-pc',
   port: 5432,
-  database: "wayfarer"
+  database: 'wayfarer',
 });
 
 client.connect();
 
-router.get("/", async (req, res, next) => {
-  const result = await client.query("select * from trip");
-  res.status(200).send(result.rows);
+router.get('/', [auth], async (req, res) => {
+  const trip = await client.query('select * from trip');
+  res.status(200).send(trip.rows);
 });
 
-router.post("/", auth, async (req, res) => {
+router.post('/', [auth, admin], async (req, res) => {
   const result = validate(req.body);
 
   if (result.error) {
     res.status(404).json({
-      status: "failure",
-      message: "Invalid request data",
-      error: result.error.details[0].message
+      status: 'failure',
+      message: 'Invalid request data',
+      error: result.error.details[0].message,
     });
   }
 
-  trip_id = Math.ceil(Math.random() * 9999);
   await client.query(
-    "insert into trip (id, bus_id, origin, destination, trip_date, fare, status) values($1, $2, $3, $4, $5, $6, $7)",
+    'insert into trip (trip_id, bus_id, origin, destination, trip_date, fare, status) values($1, $2, $3, $4, $5, $6, $7)',
     [
-      `${trip_id}`,
+      `${req.body.trip_id}`,
       `${req.body.bus_id}`,
       `${req.body.origin}`,
       `${req.body.destination}`,
       `${req.body.trip_date}`,
       `${req.body.fare}`,
-      `${req.body.status}`
-    ]
+      `${req.body.status}`,
+    ],
   );
+
   res.status(200).send({
-    status: "success",
-    data: {
-      trip_id: trip_id,
-      bus_id: req.body.bus_id,
-      origin: req.body.origin,
-      destination: req.body.destination,
-      trip_date: req.body.trip_date,
-      fare: req.body.fare
-    }
+    status: 'success',
+    data: req.body,
   });
 });
 
-router.delete("/:id", [auth, admin], async (req, res) => {
-  await client.query("delete from users where id = $1", [`${req.params.id}`]);
+router.delete('/:id', [auth, admin], async (req, res) => {
+  await client.query('delete from users where id = $1', [`${req.params.id}`]);
   res.send(true);
 });
 
